@@ -2,6 +2,9 @@
 const todoList = document.getElementById("todoList");
 const form = document.getElementById("form");
 
+const savedTodos = JSON.parse(localStorage.getItem("todos"));
+todoList.innerHTML = savedTodos;
+
 form.addEventListener("submit", function(event) {
   event.preventDefault();
 
@@ -15,18 +18,22 @@ form.addEventListener("submit", function(event) {
   todoList.append(newListItem);
 
   event.target.newTodo.value = "";
+
+  const todos = JSON.stringify(todoList.innerHTML);
+  localStorage.setItem("todos", todos);
 });
 
 // Mark a todo as completed (cross out the text of the todo)
 todoList.addEventListener("click", function(event) {
   if (event.target.tagName === "LI") {
     event.target.classList.toggle("completed");
+    const todos = JSON.stringify(todoList.innerHTML);
+    localStorage.setItem("todos", todos);
   }
   // Remove a todo
   if (event.target.tagName === "BUTTON") {
     event.target.parentElement.remove();
+    const todos = JSON.stringify(todoList.innerHTML);
+    localStorage.setItem("todos", todos);
   }
 });
-
-// Now that you have a functioning todo app, save your todos in localStorage!
-// Make sure that when the page refreshes, the todos on the page remain there.
